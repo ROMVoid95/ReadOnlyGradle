@@ -1,7 +1,9 @@
 # ReadOnlyGradle
 Highly Experimental gradle plugin
 
-![](https://badgen.net/github/release/ROMVoid95/ReadOnlyGradle) ![](https://badgen.net/github/tag/ROMVoid95/ReadOnlyGradle)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ROMVoid95/ReadOnlyGradle) ![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/ROMVoid95/ReadOnlyGradle?include_prereleases&label=pre-release)
+
+![Custom badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FROMVoid95%2FReadOnlyGradle%2Fmaster%2Ficon.json&link=https://plugins.gradle.org/plugin/net.rom.romgradle)
 
 Usage
 ----

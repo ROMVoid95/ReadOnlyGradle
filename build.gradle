@@ -1,21 +1,39 @@
 plugins {
-    id 'idea'
-	id 'groovy'
     id 'eclipse'
+	id 'idea'
+	id 'groovy'
 	id 'java-gradle-plugin'
-	id 'maven-publish'
 	id 'java-library'
 	id 'com.gradle.plugin-publish' version '0.12.0'
 	id 'com.gradle.build-scan' version '1.16'
 }
 
-ext {
-	inceptionYear = '2020'
-	url = 'https://github.com/ROMVoid95/ReadOnlyGradle'
+import groovy.json.JsonSlurper
+
+class Secrets {
+	Map m_data = null
+
+	final String getProperty(final String key) {
+		return (m_data && (m_data[key] != null)) ? m_data[key] : ''
+	}
 }
 
-group = 'net.rom.romgradle'
-version = '1.0.4'
+final def secretFile
+if (System.getenv('SECRET_FILE')) {
+	secretFile = file System.getenv().SECRET_FILE
+} else {
+	secretFile = file 's.json'
+}
+
+import java.util.regex.Matcher
+
+project.ext.secret = new Secrets()
+if (secretFile.exists()) {
+	secretFile.withReader {
+		project.secret.m_data = new JsonSlurper().parse it
+	}
+}
+
 description = 'Gradle plugin apply ForgeGradle, CurseGradle and Galacticraft Dependencies'
 archivesBaseName = 'ReadOnlyGradle'
 
@@ -49,44 +67,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-jar {
-	configurations.shade.each { dep ->
-		/* I can use this again to find where dupes come from, so.. gunna just keep it here.
-		logger.lifecycle(dep.toString())
-		project.zipTree(dep).visit {
-			element ->
-				def path = element.relativePath.toString()
-				if (path.contains('org/eclipse/core') && path.endsWith('.class'))
-					println "  $element.relativePath"
-			
-		}
-		*/
-		from(project.zipTree(dep)){
-			exclude 'META-INF', 'META-INF/**', '.api_description', '.options', 'about.html', 'module-info.class', 'plugin.properties', 'plugin.xml', 'about_files/**'
-			duplicatesStrategy 'warn'
-		}
-	}
-
-	manifest {
-		attributes 'version':project.version
-		attributes 'javaCompliance': project.targetCompatibility
-		attributes 'group':project.group
-		attributes 'Implementation-Version': project.version
-	}
-}
-
-task sourcesJar(type: Jar) {
-	from sourceSets.main.allSource
-	classifier = 'sources'
-}
-
-artifacts {
-	archives jar
-	archives sourcesJar
-}
-
-assemble.dependsOn sourcesJar
-
 [compileJava, compileGroovy].each {
 	it.options.encoding = 'UTF-8'
 	it.options.deprecation = true
@@ -94,7 +74,7 @@ assemble.dependsOn sourcesJar
 }
 
 pluginBundle {
-	website = project.url
+	website = 'https://github.com/ROMVoid95/ReadOnlyGradle'
 	vcsUrl = 'https://github.com/ROMVoid95/ReadOnlyGradle'
 	plugins {
 		readOnlyGradlePlugin {
@@ -111,3 +91,5 @@ buildScan {
 	termsOfServiceUrl = 'https://gradle.com/terms-of-service'
 	termsOfServiceAgree = 'yes'
 }
+
+apply from: 'task/publish.gradle'

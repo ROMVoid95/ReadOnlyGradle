@@ -21,7 +21,7 @@ Usage
     		}
   		}
   		dependencies {
-    		classpath "gradle.plugin.net.rom.romgradle:ReadOnlyGradle:{version}"
+    		classpath "gradle.plugin.net.rom.romgradle:ReadOnlyGradle:0.1.0"
   		}
 	}
 
@@ -30,7 +30,7 @@ Usage
    alternatively, you can use the new plugin syntax for gradle `2.1+`
    ```groovy
 	plugins {
-		id "net.rom.romgradle" version "{version}"
+		id "net.rom.romgradle" version "0.1.0"
 	}
    ```
 

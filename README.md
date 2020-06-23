@@ -1,2 +1,4 @@
-# BBMGradle
-Highly Experimental gradle plugin for BBM projects
+# ReadOnlyGradle
+Highly Experimental gradle plugin
+
+//  MORE TO COME AT A LATER DATE

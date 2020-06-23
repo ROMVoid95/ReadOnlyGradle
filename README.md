@@ -1,6 +1,8 @@
 # ReadOnlyGradle
 Highly Experimental gradle plugin
 
+![](https://badgen.net/github/release/ROMVoid95/ReadOnlyGradle) ![](https://badgen.net/github/tag/ROMVoid95/ReadOnlyGradle)
+
 Usage
 ----
 

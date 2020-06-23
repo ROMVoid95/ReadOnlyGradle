@@ -78,7 +78,7 @@ pluginBundle {
 	vcsUrl = 'https://github.com/ROMVoid95/ReadOnlyGradle'
 	plugins {
 		readOnlyGradlePlugin {
-			id = project.group
+			id = project.GROUP
 			description = project.description
 			displayName = 'ReadOnlyGradle'
 			version = project.version

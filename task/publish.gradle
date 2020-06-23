@@ -25,20 +25,17 @@ signing {
 group = GROUP
 version = VERSION
 
-publishing {
+uploadArchives {
 	repositories {
-		maven {
-			name = "GitHubPackages"
-			url = uri("https://maven.pkg.github.com/ROMVoid95/ReadOnlyGradle")
-			credentials {
-				username = secret.NAME
-				password = secret.GHTOKEN
+		mavenDeployer {
+			beforeDeployment { deployment -> signing.signPom(deployment) }
+
+			def repoUrl = "https://maven.pkg.github.com/ROMVoid95/ReadOnlyGradle"
+
+			repository(url: repoUrl) {
+				authentication(userName: secret.NAME, password: secret.GHTOKEN)
 			}
-		}
-	}
-	publications {
-		gpr(MavenPublication) {
-			from(components.java)
+
 			pom.project {
 				name POM_NAME
 				packaging POM_PACKAGING
@@ -70,7 +67,6 @@ publishing {
 	}
 }
 
-
 task customize << {
 	println secret.UNAME
 	println secret.GHTOKEN
@@ -78,10 +74,11 @@ task customize << {
 	println POM_DEVELOPER_NAME
 	println POM_SCM_URL
 	println POM_NAME
+	println POM_GROUP
 }
 
 task checkRelease << {
-	def readmeVersion = file('README.md').readLines().find { it.contains("$POM_GROUP:$POM_ARTIFACT_ID:") }?.trim()
+	def readmeVersion = file('README.md').readLines().find { it.contains("$GROUP:$POM_NAME:") }?.trim()
 
 	if (readmeVersion == null) {
 		throw new ProjectConfigurationException("Missing README version string", null)

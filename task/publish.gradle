@@ -18,53 +18,58 @@ artifacts {
 	archives sourcesJar
 }
 
-signing {
-	sign configurations.archives
-}
+//signing {
+//	sign configurations.archives
+//}
 
 group = GROUP
 version = VERSION
 
-uploadArchives {
+publishing {
 	repositories {
-		mavenDeployer {
-			beforeDeployment { deployment -> signing.signPom(deployment) }
-
-			def repoUrl = "https://maven.pkg.github.com/ROMVoid95/ReadOnlyGradle"
-
-			repository(url: repoUrl) {
-				authentication(userName: secret.NAME, password: secret.GHTOKEN)
-			}
-
-			pom.project {
-				name POM_NAME
-				packaging POM_PACKAGING
-				description POM_DESCRIPTION
-				url POM_URL
-
-				scm {
-					url POM_SCM_URL
-					connection POM_SCM_CONNECTION
-					developerConnection POM_SCM_DEV_CONNECTION
-				}
-
-				licenses {
-					license {
-						name POM_LICENSE_NAME
-						url POM_LICENSE_URL
-						distribution POM_LICENSE_DIST
-					}
-				}
-
-				developers {
-					developer {
-						id POM_DEVELOPER_ID
-						name POM_DEVELOPER_NAME
-					}
-				}
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/ROMVoid95/ReadOnlyGradle")
+			credentials {
+				username = secret.NAME
+				password = secret.GHTOKEN
 			}
 		}
 	}
+	publications {
+		gpr(MavenPublication) {
+			pom {
+				name = POM_NAME
+				description = POM_DESCRIPTION
+				url = POM_URL
+				licenses {
+					license {
+						name = POM_LICENSE_NAME
+                        url = POM_LICENSE_URL
+                        distribution = POM_LICENSE_DIST
+
+					}
+				}
+				developers {
+					developer {
+						id = POM_DEVELOPER_ID
+						name = POM_DEVELOPER_NAME
+						email = POM_DEVELOPER_EMAIL
+					}
+				}
+				scm {
+                       url = POM_SCM_URL
+                       connection = POM_SCM_CONNECTION
+                       developerConnection = POM_SCM_DEV_CONNECTION
+				}
+			}
+			from(components.java)
+		}
+	}
+}
+
+signing {
+	sign publishing.publications.gpr
 }
 
 task customize << {

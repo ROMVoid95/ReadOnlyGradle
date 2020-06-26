@@ -1,6 +1,6 @@
-package net.rom.romgradle.util
+package net.rom.readonlygradle.util
 
-class DepUtil {
+class Util {
 	
     def static setDepProperty(String group, String packge, version, String defaultVersion) {
 		if (version != false) {

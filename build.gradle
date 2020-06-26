@@ -34,6 +34,7 @@ if (secretFile.exists()) {
 	}
 }
 
+version = project.VERSION
 description = 'Gradle plugin apply ForgeGradle, CurseGradle and Galacticraft Dependencies'
 archivesBaseName = 'ReadOnlyGradle'
 
@@ -73,16 +74,24 @@ dependencies {
 	it.options.fork = true
 }
 
+gradlePlugin {
+	plugins {
+	  readOnlyGradlePlugin {
+		id = 'net.rom.readonlygradle'
+		implementationClass = 'net.rom.readonlygradle.ReadOnlyGradlePlugin'
+	  }
+	}
+  }
+
 pluginBundle {
 	website = 'https://github.com/ROMVoid95/ReadOnlyGradle'
 	vcsUrl = 'https://github.com/ROMVoid95/ReadOnlyGradle'
+	tags = ['minecraftforge', 'curseforge', 'minecraft', 'forge', 'galacticraft']
+	description = project.description
+	
 	plugins {
 		readOnlyGradlePlugin {
-			id = project.GROUP
-			description = project.description
 			displayName = 'ReadOnlyGradle'
-			version = project.version
-			tags = ['minecraftforge', 'curseforge', 'minecraft', 'forge', 'galacticraft']
 		}
 	}
 }

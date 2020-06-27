@@ -62,7 +62,7 @@ repositories {
 dependencies {
 	compile gradleApi()
 	compile localGroovy()
-	compile 'com.google.guava:guava:23.0'
+	compile 'com.google.guava:guava:[24.1.1,)'
 	shade 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
 	shade 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
 	implementation 'se.bjurr.gitchangelog:git-changelog-lib:1.92'

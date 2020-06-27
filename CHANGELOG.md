@@ -5,6 +5,12 @@ Changelog for ROMVoid95 ReadOnlyGradle.
 ## Unreleased
 ### No issue
 
+**Add: commitlint plugin**
+
+ * Info: trying to see if this works 
+
+[f1de976adb18f9c](https://github.com/ROMVoid95/ReadOnlyGradle/commit/f1de976adb18f9c) ROMVoid95 *2020-06-27 01:36:50*
+
 **Just to test some things**
 
  * Add - this one thing 

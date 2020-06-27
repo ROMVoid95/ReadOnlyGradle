@@ -1,11 +1,12 @@
 plugins {
-    id 'eclipse'
+	id 'eclipse'
 	id 'idea'
 	id 'groovy'
 	id 'java-gradle-plugin'
 	id 'java-library'
 	id 'com.gradle.plugin-publish' version '0.12.0'
 	id 'com.gradle.build-scan' version '1.16'
+	id "se.bjurr.gitchangelog.git-changelog-gradle-plugin" version "1.64"
 }
 
 import groovy.json.JsonSlurper
@@ -48,6 +49,7 @@ configurations {
 
 repositories {
 	jcenter()
+	mavenCentral()
 	maven {
 		url "https://plugins.gradle.org/m2/"
 	}
@@ -58,14 +60,15 @@ repositories {
 }
 
 dependencies {
-    compile gradleApi()
+	compile gradleApi()
 	compile localGroovy()
-    compile 'com.google.guava:guava:23.0'
-    shade 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    shade 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
+	compile 'com.google.guava:guava:23.0'
+	shade 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+	shade 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
+	implementation 'se.bjurr.gitchangelog:git-changelog-lib:1.92'
 
-    // Use JUnit test framework
-    testCompile 'junit:junit:4.12'
+	// Use JUnit test framework
+	testCompile 'junit:junit:4.12'
 }
 
 [compileJava, compileGroovy].each {
@@ -76,19 +79,25 @@ dependencies {
 
 gradlePlugin {
 	plugins {
-	  readOnlyGradlePlugin {
-		id = 'net.rom.readonlygradle'
-		implementationClass = 'net.rom.readonlygradle.ReadOnlyGradlePlugin'
-	  }
+		readOnlyGradlePlugin {
+			id = 'net.rom.readonlygradle'
+			implementationClass = 'net.rom.readonlygradle.ReadOnlyGradlePlugin'
+		}
 	}
-  }
+}
 
 pluginBundle {
 	website = 'https://github.com/ROMVoid95/ReadOnlyGradle'
 	vcsUrl = 'https://github.com/ROMVoid95/ReadOnlyGradle'
-	tags = ['minecraftforge', 'curseforge', 'minecraft', 'forge', 'galacticraft']
+	tags = [
+		'minecraftforge',
+		'curseforge',
+		'minecraft',
+		'forge',
+		'galacticraft'
+	]
 	description = project.description
-	
+
 	plugins {
 		readOnlyGradlePlugin {
 			displayName = 'ReadOnlyGradle'
@@ -99,6 +108,12 @@ pluginBundle {
 buildScan {
 	termsOfServiceUrl = 'https://gradle.com/terms-of-service'
 	termsOfServiceAgree = 'yes'
+}
+
+task gitChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	file = new File('CHANGELOG.md')
+	gitHubIssuePattern = "nonada123"
+	templateContent = file('changelog.mustache').getText('UTF-8')
 }
 
 apply from: 'task/publish.gradle'
